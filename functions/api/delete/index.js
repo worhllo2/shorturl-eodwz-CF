@@ -33,9 +33,9 @@ export async function onRequest({ request, env }) {
   }
 
   try {
-    const linkDataStr = await DWZ_KV.get(slug);
+    const linkDataStr = await env.DWZ_KV.get(slug);
     if (linkDataStr) {
-      await DWZ_KV.delete(slug);
+      await env.DWZ_KV.delete(slug);
     }
 
     return new Response(JSON.stringify({ success: true, slug }), {

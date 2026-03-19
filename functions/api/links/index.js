@@ -28,16 +28,16 @@ export async function onRequest({ request, env }) {
     let complete = false;
 
     do {
-      const result = await DWZ_KV.list(cursor ? { cursor } : {});
+      const result = await env.DWZ_KV.list(cursor ? { cursor } : {});
       if (result.keys) allKeys = allKeys.concat(result.keys);
       cursor = result.cursor;
-      complete = result.complete;
+      complete = result.list_complete;
     } while (!complete);
 
     const links = await Promise.all(
-      allKeys.map(async ({ key }) => {
+      allKeys.map(async ({ name: key }) => {
         if (key === 'visitCount') return null;
-        const value = await DWZ_KV.get(key);
+        const value = await env.DWZ_KV.get(key);
         if (value) {
           try {
             const data = JSON.parse(value);

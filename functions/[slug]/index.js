@@ -319,22 +319,23 @@ export async function onRequest({ request, params, env }) {
 
   // 其它 slug：短链跳转
   try {
-    const link = await DWZ_KV.get(slug);
+    const link = await env.DWZ_KV.get(slug);
     if (link) {
       const linkData = JSON.parse(link);
       linkData.visits = (linkData.visits || 0) + 1;
-      await DWZ_KV.put(slug, JSON.stringify(linkData));
+      await env.DWZ_KV.put(slug, JSON.stringify(linkData));
       
       // 使用真正的 Beacon API 向 Umami 发送统计数据
       try {
+        const umamiConfig = getUmamiConfig(env);
         // 构建当前页面URL
         const url = new URL(request.url);
         const currentUrl = `${url.origin}/${slug}`;
         
         // 构建简单的 Beacon 请求参数
-        const beaconUrl = `${UMAMI_CONFIG.host}/api/collect`;
+        const beaconUrl = `${umamiConfig.host}/api/collect`;
         const beaconData = new URLSearchParams({
-          website: UMAMI_CONFIG.websiteId,
+          website: umamiConfig.websiteId,
           url: currentUrl,
           hostname: url.hostname,
           screen: '1920x1080', // 默认值

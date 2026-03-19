@@ -50,7 +50,7 @@ export async function onRequest({ request, env }) {
         headers: { 'Content-Type': 'application/json' },
       });
     }
-    const existing = await DWZ_KV.get(slug);
+    const existing = await env.DWZ_KV.get(slug);
     if (existing) {
       return new Response(JSON.stringify({ error: '此自定义短链接已被使用，请重试。' }), {
         status: 409,
@@ -61,14 +61,14 @@ export async function onRequest({ request, env }) {
     let newSlug, existing;
     do {
       newSlug = Math.random().toString(36).substring(2, 8);
-      existing = await DWZ_KV.get(newSlug);
+      existing = await env.DWZ_KV.get(newSlug);
     } while (existing || (adminPath && newSlug === adminPath));
     slug = newSlug;
   }
 
   const linkData = { original: url, visits: 0 };
 
-  await DWZ_KV.put(slug, JSON.stringify(linkData));
+  await env.DWZ_KV.put(slug, JSON.stringify(linkData));
 
   return new Response(JSON.stringify({ slug, ...linkData }), {
     headers: { 'Content-Type': 'application/json' },
