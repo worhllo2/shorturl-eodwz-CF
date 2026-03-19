@@ -1,6 +1,6 @@
 # 基于 Cloudflare Pages 的短网址生成工具
 
-本项目是一个基于 Cloudflare Pages Functions 驱动的“无文件”短链接服务。它结合了 Cloudflare KV 存储，提供简单、快速且易于部署的短链接解决方案。
+本项目是一个基于 Cloudflare Pages Functions 驱动的“无文件”短链接服务。它结合了 Cloudflare KV 存储，提供简单、快速且易于部署的短链接解决方案。基于[aihttpeodwz 基于腾讯云 EdgeOne Pages 的短网址生成工具](https://github.com/aihttp/eodwz)二改，切换部署方式于Cloudflare，感谢CF赛博大善人！感谢原仓库作者！
 
 ## 🚀 部署指南
 
