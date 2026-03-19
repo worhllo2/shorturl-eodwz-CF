@@ -300,8 +300,9 @@ async function isAuthed(request, env) {
 }
 
 export async function onRequest({ request, params, env }) {
-  const { slug } = params;
-  const adminPath = env.ADMIN_PATH || 'admin';;
+  // Cloudflare [[slug]] 返回的是数组，如 /admin 对应 params.slug = ["admin"]
+  const slug = (params.slug && params.slug.length > 0) ? params.slug[0] : undefined;
+  const adminPath = env.ADMIN_PATH || 'admin';
 
   // / => 主页（科技风格纯色图 + 你好世界）
   if (!slug || slug === 'favicon.ico') {
